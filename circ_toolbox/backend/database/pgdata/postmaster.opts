@@ -1,0 +1,1 @@
+/home/hugo/miniconda3/envs/circrna_pipeline_env_p3_10/bin/postgres "-D" "circ_toolbox/backend/database/pgdata"

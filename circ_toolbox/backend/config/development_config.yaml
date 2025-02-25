@@ -1,0 +1,32 @@
+GOAnnotationFetcher:
+  batch_size: 3
+  sleep_time: 1
+  api_timeout: [10, 200]
+  quickgo_url: "https://www.ebi.ac.uk/QuickGO/services/annotation/search"
+  geneProductType: "protein"
+  fields_to_include: ["goName", "taxonName", "name", "synonyms"]
+  aspect: ["biological_process", "molecular_function", "cellular_component"]
+  limit: 200
+
+
+UniProtDataPreparer:
+  uniprot_url: "https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
+  num_threads: 4  # Default number of threads to use - IF not provided, default is 'multiprocessing.cpu_count()'
+  force_run: false  # Default value for force running steps
+  blast_output_file: "blast_results.xml"  # Default BLASTP output filename
+  diamond_output_file: "diamond_results.tsv"  # Default DIAMOND output filename
+  skip_download: false
+  skip_blast: false
+  skip_diamond: false
+
+
+AnnotationProcessor:
+  evalue_threshold: 1e-10
+  filtered_annotations_file: "filtered_annotations.jsonl"
+  aggregated_annotations_file: "aggregated_annotations.tsv"
+  processed_annotations_file: "processed_annotations.tsv"
+  report_file: "gene_report.txt"
+  fields_to_extract: ["goName", "taxonName", "name", "synonyms"]
+  filter_criteria: {}
+  best_uniprot_only: false
+  memory_safety_threshold: 500  # MB

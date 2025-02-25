@@ -1,0 +1,83 @@
+name: circ_toolbox_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # Core Python
+  - python=3.13  # Use a compatible Python version
+  - pip
+
+  # Python Packages
+  - pandas
+  - tqdm
+  - biopython  # For parsing BLAST XML
+  - requests  # For QuickGO API calls
+  - numpy  # Optional: improves pandas performance
+  - psutil  # Optional: monitors subprocess resource usage
+  - lxml  # Optional: improves XML parsing
+  - pypickle
+  
+  # BLAST (for `makeblastdb` and `blastp`)
+  - blast #=2.13.0  # Specify a compatible version for NCBI BLAST
+  
+  # DIAMOND (for `diamond makedb` and `diamond blastp`)
+  - diamond #=2.0.15
+
+  # System Utilities
+  - libcurl  # Needed for requests
+  - curl  # Command-line tool for testing downloads
+
+  - yaml
+
+
+  # Backend Python Packages
+  - fastapi  # Web framework
+  - uvicorn  # ASGI server for running FastAPI
+  - sqlalchemy  # ORM for interacting with the database
+  - alembic  # Database migration tool
+  - uvloop # High-performance asyncio event loop
+  - asyncpg  # PostgreSQL async driver
+  - psycopg2  # PostgreSQL support
+  - email-validator  # Required by FastAPI Users
+  - bcrypt  # For password hashing
+  - python-dotenv  # To handle environment variables
+  - httpx  # For making async HTTP requests
+  - pydantic  # Data validation and settings management
+  - typer  # CLI integration for FastAPI
+  - gunicorn  # Production WSGI server
+  - starlette  # Web framework used by FastAPI
+  - fastapi-users  # Authentication and user management
+  - fastapi-users-db-sqlalchemy
+  - postgresql
+
+  # Database Drivers
+  - sqlite  # SQLite for development (optional)
+  - aiosqlite  # Add this line to include aiosqlite support
+
+  # Frontend Tools (for React development and testing)
+  - nodejs  # Required to install frontend dependencies
+  - yarn  # Package manager for React projects
+
+  # Testing and Development Utilities
+  - pytest  # Testing framework
+  - pytest-asyncio  # Async testing support
+  - pytest-mock  # Mocking for tests
+  - requests  # HTTP requests for testing
+  - watchdog  # For automatic reloading
+  - loguru  # Enhanced logging support
+
+  # Misc Utilities
+  - tqdm  # Progress bars for scripts
+  - biopython  # Biological data parsing
+  - pypickle  # Serialization
+
+  # File Handling Utilities
+  - wget
+  - gzip
+  - zlib
+
+  # Install missing packages via pip
+  - pip:
+    - bcrypt
+# conda env create --file environment.yml

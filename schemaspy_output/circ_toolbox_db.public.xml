@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="circ_toolbox_db" schema="public" type="PostgreSQL - 17.2">
+   <tables>
+      <table name="alembic_version" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version_num" nullable="false" remarks="" size="32" type="varchar" typeCode="12"/>
+         <primaryKey column="version_num" sequenceNumberInPK="1"/>
+         <index name="alembic_version_pkc" unique="true">
+            <column ascending="true" name="version_num"/>
+         </index>
+      </table>
+      <table name="bioprojects" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="bioproject_id" nullable="false" remarks="" size="50" type="varchar" typeCode="12">
+            <child column="bioproject_id" foreignKey="srr_resources_bioproject_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="srr_resources"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="date_added" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="bioprojects_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="ix_bioprojects_bioproject_id" unique="true">
+            <column ascending="true" name="bioproject_id"/>
+         </index>
+      </table>
+      <table name="pipeline_configs" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="pipeline_id" nullable="true" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipeline_configs_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipelines"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="config_type" nullable="false" remarks="" size="2147483647" type="config_type_enum" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="config_data" nullable="false" remarks="" size="2147483647" type="json" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="config_file_path" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="date_added" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pipeline_configs_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipeline_logs" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="pipeline_id" nullable="true" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipeline_logs_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipelines"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="step_id" nullable="true" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipeline_logs_step_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_steps"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="logs" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="created_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pipeline_logs_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipeline_resources" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="pipeline_id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipeline_resources_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipelines"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="resource_id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipeline_resources_resource_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="resources"/>
+         </column>
+         <primaryKey column="pipeline_id" sequenceNumberInPK="1"/>
+         <primaryKey column="resource_id" sequenceNumberInPK="2"/>
+         <index name="pipeline_resources_pkey" unique="true">
+            <column ascending="true" name="pipeline_id"/>
+            <column ascending="true" name="resource_id"/>
+         </index>
+      </table>
+      <table name="pipeline_steps" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <child column="step_id" foreignKey="pipeline_logs_step_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_logs"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="pipeline_id" nullable="true" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipeline_steps_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipelines"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="step_name" nullable="false" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="parameters" nullable="false" remarks="" size="2147483647" type="json" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="requires_input_file" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="input_files" nullable="true" remarks="" size="2147483647" type="json" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="status" nullable="true" remarks="" size="2147483647" type="step_status" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="start_time" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="end_time" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="results" nullable="true" remarks="" size="2147483647" type="json" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="input_mapping" nullable="true" remarks="" size="2147483647" type="json" typeCode="1111"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pipeline_steps_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="pipelines" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <child column="pipeline_id" foreignKey="pipeline_configs_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_configs"/>
+            <child column="pipeline_id" foreignKey="pipeline_logs_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_logs"/>
+            <child column="pipeline_id" foreignKey="pipeline_resources_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_resources"/>
+            <child column="pipeline_id" foreignKey="pipeline_steps_pipeline_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_steps"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="pipeline_name" nullable="false" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="user_id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="pipelines_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="true" remarks="" size="2147483647" type="pipeline_status" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="created_at" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="start_time" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="end_time" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="notes" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pipelines_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="resources" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <child column="resource_id" foreignKey="pipeline_resources_resource_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipeline_resources"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="resource_type" nullable="false" remarks="" size="2147483647" type="resource_type_enum" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="species" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="version" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="file_path" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="file_size" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="date_added" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="uploaded_by" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <parent column="id" foreignKey="resources_uploaded_by_fkey" implied="false" onDeleteCascade="true" schema="public" table="users"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="resources_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="idx_resource_type" unique="false">
+            <column ascending="true" name="resource_type"/>
+         </index>
+      </table>
+      <table name="srr_resources" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="bioproject_id" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="bioproject_id" foreignKey="srr_resources_bioproject_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="bioprojects"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="srr_id" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="file_path" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="file_size" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="date_added" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="status" nullable="false" remarks="" size="15" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="srr_resources_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="ix_srr_resources_bioproject_id" unique="false">
+            <column ascending="true" name="bioproject_id"/>
+         </index>
+         <index name="ix_srr_resources_file_path" unique="false">
+            <column ascending="true" name="file_path"/>
+         </index>
+         <index name="ix_srr_resources_srr_id" unique="true">
+            <column ascending="true" name="srr_id"/>
+         </index>
+         <checkConstraint constraint="((status)::text = ANY ((ARRAY['registered'::character varying, 'downloaded'::character varying, 'failed'::character varying])::text[]))" name="srr_resources_status_check"/>
+      </table>
+      <table name="users" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="username" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
+            <child column="user_id" foreignKey="pipelines_user_id_fkey" implied="false" onDeleteCascade="true" schema="public" table="pipelines"/>
+            <child column="uploaded_by" foreignKey="resources_uploaded_by_fkey" implied="false" onDeleteCascade="true" schema="public" table="resources"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="email" nullable="false" remarks="" size="320" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="hashed_password" nullable="false" remarks="" size="1024" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="is_active" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="is_superuser" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="is_verified" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="users_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="ix_users_email" unique="true">
+            <column ascending="true" name="email"/>
+         </index>
+         <index name="users_username_key" unique="true">
+            <column ascending="true" name="username"/>
+         </index>
+      </table>
+   </tables>
+</database>
